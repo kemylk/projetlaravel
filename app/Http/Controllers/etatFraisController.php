@@ -151,7 +151,20 @@ return view('visualiserFraisVisiteur')
     }
 
 
+    public function modifier($visiteur,$mois){
 
+        $lignefrais=PdoGsb::getLigneFraisForfait($visiteur,$mois);
+
+        return view("miseajour")->with("ligne",$lignefrais);
+
+
+    }
+
+
+
+    public function ValiderModification(){
+        return view("succesMaj");
+    }
     public function validerFiche($visiteur, $mois){
         //do stuffs here with $prisw and $secsw
         $visiteurs = PdoGsb::getAllVisiteurs();

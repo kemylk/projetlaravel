@@ -42,6 +42,8 @@ class gererFraisController extends Controller{
         }
     }
 
+    
+
 
     
     function sauvegarderFrais(Request $request){

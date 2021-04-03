@@ -15,6 +15,7 @@
             @foreach($lesFraisForfait as $unFraisForfait)
 			    <th> {{$unFraisForfait['libelle']}} </th>
             @endforeach
+            <th>modifier</th>
             <th> valider</th>
 		</tr>
         <tr>
@@ -22,6 +23,14 @@
                 <td class="qteForfait">{{ $unFraisForfait['quantite'] }} 
                 </td>
             @endforeach
+
+            <td>
+            
+            <button>
+             <a 
+             href="{{route('modifier', ['visiteur'=>$visiteur, 'mois'=>$leMois])}}">modifier</a>
+             </button>
+            </td>
             <td>
             
             <button>

@@ -133,7 +133,8 @@ public function getInfoComptable($login, $mdp){
 */
 // select montant ajouté pour le TP1
 	public function getLesFraisForfait($idVisiteur, $mois){
-		$req = "select fraisforfait.id as idfrais, fraisforfait.libelle as libelle, fraisforfait.montant as montant,
+		$req = "select fraisforfait.id as idfrais, fraisforfait.libelle as libelle,
+		 fraisforfait.montant as montant,
 		lignefraisforfait.quantite as quantite, montant * quantite as valeur from lignefraisforfait inner join fraisforfait 
 		on fraisforfait.id = lignefraisforfait.idfraisforfait
 		where lignefraisforfait.idvisiteur ='$idVisiteur' and lignefraisforfait.mois='$mois' 
@@ -216,6 +217,19 @@ public function getLesPrixFrais(){
 		}
 		return $ok;
 	}
+
+
+
+	public function getLigneFraisForfait($idVisiteur,$mois){
+		$req = "select * from lignefraisforfait 
+	where lignefraisforfait.idVisiteur='" . $idVisiteur . "' and lignefraisforfait.mois='" . $mois ."'";
+	$rs = $this->monPdo->query($req);
+	$ligne = $rs->fetchAll();
+	return $ligne;
+	}
+
+
+
 /**
  * Retourne le dernier mois en cours d'un visiteur
  

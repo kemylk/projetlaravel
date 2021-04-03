@@ -53,11 +53,22 @@ Route::get('validerFeuillesdefrai',[
 'uses'=>'etatFraisController@formulaireValidation'
 ]);
 
-$router->get('/switchinfo/{visiteur}/{mois}',[
+Route::get('/switchinfo/{visiteur}/{mois}',[
         'uses' => 'etatFraisController@validerFiche',
         'as'   => 'switch'
     ]);
 
+Route::get('/modifier/{visiteur}/{mois}',[
+        'uses' => 'etatFraisController@modifier',
+        'as'   => 'modifier'
+    ]);
+
+
+
+Route::get("/modifier/succes",[
+        'uses'=>'etatFraisController@ValiderModification',
+        'as'=>'modifsucces'
+]);
 
 Route::post('afficher_fiche',[
         'as'=>'afficher_fiche',

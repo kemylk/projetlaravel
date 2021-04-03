@@ -5,9 +5,12 @@
             <div id="infosUtil">
                   
              </div>  
+
+
                <ul id="menuList">
                    <li >
-                      bonjour
+                      bonjour  <strong> {{ $comptable['login'] }}</strong>
+
                    </li>
                  
                   <li class="smenu">

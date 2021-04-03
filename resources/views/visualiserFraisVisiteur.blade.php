@@ -15,13 +15,22 @@
             @foreach($lesFraisForfait as $unFraisForfait)
 			    <th> {{$unFraisForfait['libelle']}} </th>
             @endforeach
+            <th> valider</th>
 		</tr>
         <tr>
             @foreach($lesFraisForfait as $unFraisForfait)
                 <td class="qteForfait">{{ $unFraisForfait['quantite'] }} 
                 </td>
             @endforeach
+            <td>
+            
+            <button>
+             <a 
+             href="{{route('switch', ['visiteur'=>$visiteur, 'mois'=>$leMois])}}">valider</a>
+             </button>
+            </td>
 		</tr>
+       
     </table>
   	</div>
 @endsection

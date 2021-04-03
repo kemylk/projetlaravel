@@ -318,9 +318,10 @@ public function getLesPrixFrais(){
  */
 
  
-	public function majEtatFicheFrais($idVisiteur,$mois,$etat){
+	public function majEtatFicheFrais($idVisiteur,$mois,$etat,$montant){
 		$req = "update ficheFrais set idEtat = '$etat', dateModif = now() 
-		where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
+		where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois' and 
+		montantValide='$montant'";
 		$this->monPdo->exec($req);
 	}
 

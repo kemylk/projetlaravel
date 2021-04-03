@@ -90,7 +90,8 @@ class etatFraisController extends Controller
                         ->with('visiteurs', $visiteurs)
                         ->with('lesMois', $lesMois)
                         ->with('leMois', $moisASelectionner)
-                       ;
+                        ->with('comptable',session('comptable'));
+                       
         }
         else{
             return view('connexion')->with('erreurs',null);
@@ -130,8 +131,11 @@ class etatFraisController extends Controller
                 ->with('lesFraisForfait',$lesFraisForfait)
                 ->with('visiteur',$visiteur);
 */
-return view('visualiserFraisVisiteur')->with('erreurs',null)                       
- ->with('visiteurs', $visiteurs)->with('leMois', $mois)->with('numAnnee',$numAnnee)
+return view('visualiserFraisVisiteur')
+//->with('erreurs',null)                       
+ ->with('visiteurs', $visiteurs)
+ 
+ ->with('leMois', $mois)->with('numAnnee',$numAnnee)
  ->with('numMois',$numMois)->with('libEtat',$libEtat)
  ->with('montantValide',$montantValide)
  ->with('nbJustificatifs',$nbJustificatifs)
@@ -139,8 +143,51 @@ return view('visualiserFraisVisiteur')->with('erreurs',null)
  ->with('lesFraisForfait',$lesFraisForfait)
  ->with('visiteur',$visiteur)
  ->with('lesMois', $lesMois)
- ->with('leMois', $moisASelectionner);
-;
+ ->with('leMois', $moisASelectionner)
+ 
+ ->with('comptable',session('comptable'));
+
 
     }
+
+
+
+    public function validerFiche($visiteur, $mois){
+        //do stuffs here with $prisw and $secsw
+        $visiteurs = PdoGsb::getAllVisiteurs();
+        $fichefrai=PdoGsb::getLesInfosFicheFrais($visiteur,$mois);
+        $res=PdoGsb::majEtatFicheFrais($visiteur,$mois,"VA",$fichefrai['montantValide']);
+
+        $lesInfosFicheFrais = PdoGsb::getLesInfosFicheFrais($visiteur,$mois);
+        $numAnnee = MyDate::extraireAnnee( $mois);
+        $numMois = MyDate::extraireMois( $mois);
+        $libEtat = $lesInfosFicheFrais['libEtat'];
+        $montantValide = $lesInfosFicheFrais['montantValide'];
+        $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
+        $dateModif =  $lesInfosFicheFrais['dateModif'];
+        $dateModifFr = MyDate::getFormatFrançais($dateModif);
+        $lesFraisForfait = PdoGsb::getLesFraisForfait($visiteur,$mois);
+
+        $lesMois = PdoGsb::getAllMois();
+        $lesCles = array_keys( $lesMois );
+        $moisASelectionner = $lesCles[0];
+
+        return view('MisAjourFicheFrai')
+        ->with('visiteurs', $visiteurs)
+        ->with('lesMois', $lesMois)
+ 
+        ->with('leMois', $mois)
+        ->with('numAnnee',$numAnnee)
+        ->with('numMois',$numMois)->with('libEtat',$libEtat)
+        ->with('montantValide',$montantValide)
+        ->with('nbJustificatifs',$nbJustificatifs)
+        ->with('dateModif',$dateModifFr)
+        ->with('lesFraisForfait',$lesFraisForfait)
+        ->with('visiteur',$visiteur)
+        ->with('lesMois', $lesMois)
+        ->with('leMois', $moisASelectionner)
+        ->with('comptable',session('comptable'));
+
+
+     }
 }

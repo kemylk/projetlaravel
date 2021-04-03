@@ -2,6 +2,7 @@
 @section('contenu1')
 <div id = "contenu">
     <h2>Identification comptable</h2>
+    
     <form method = "post" action="{{ route('comptable_valider') }}">
         {{ csrf_field() }} <!-- laravel va ajouter un champ caché avec un token -->
         @includeWhen($erreurs != null , 'msgerreurs', ['erreurs' => $erreurs]) 

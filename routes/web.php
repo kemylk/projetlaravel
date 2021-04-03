@@ -58,17 +58,19 @@ Route::get('/switchinfo/{visiteur}/{mois}',[
         'as'   => 'switch'
     ]);
 
-Route::get('/modifier/{visiteur}/{mois}',[
+Route::get('/mdoifier/{visiteur}/{mois}',[
         'uses' => 'etatFraisController@modifier',
         'as'   => 'modifier'
     ]);
 
 
 
-Route::get("/modifier/succes",[
+Route::post("/modifier/succes",[
         'uses'=>'etatFraisController@ValiderModification',
         'as'=>'modifsucces'
 ]);
+
+
 
 Route::post('afficher_fiche',[
         'as'=>'afficher_fiche',

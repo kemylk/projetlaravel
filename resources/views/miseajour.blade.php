@@ -1,3 +1,6 @@
+modification frais forfait {{$visiteur}}
+pour le mois de {{$mois}}
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -6,15 +9,16 @@
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{
                          route('modifsucces') }}">
-                        {{ csrf_field() }}
-                        {{ method_field('PUT') }}
+                       <!-- {{ csrf_field() }}-->
                        
                         @foreach($ligne as $l)
 
                         <div class="form-group">
                             <label for="name" class="col-md-4 control-label">{{$l['idFraisForfait']}}</label>
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ $l['quantite'] }}" required autofocus>
+                                <input id="name" type="text" class="form-control"
+                                 name="{{$l['idFraisForfait']}}"
+                                  value="{{ $l['idFraisForfait'] }}:{{ $l['quantite'] }}" required autofocus>
                             </div>
                         </div>
 

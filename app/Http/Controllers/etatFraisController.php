@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use PdoGsb;
 use MyDate;
+use Session;
+
 class etatFraisController extends Controller
 {
 
@@ -131,6 +133,10 @@ class etatFraisController extends Controller
                 ->with('lesFraisForfait',$lesFraisForfait)
                 ->with('visiteur',$visiteur);
 */
+
+session(['idVisiteur' => $visiteur]);
+session(['mois' => $mois]);
+
 return view('visualiserFraisVisiteur')
 //->with('erreurs',null)                       
  ->with('visiteurs', $visiteurs)
@@ -155,7 +161,10 @@ return view('visualiserFraisVisiteur')
 
         $lignefrais=PdoGsb::getLigneFraisForfait($visiteur,$mois);
 
-        return view("miseajour")->with("ligne",$lignefrais);
+        return view("miseajour")
+        ->with("ligne",$lignefrais)
+        ->with("visiteur",$visiteur)
+        ->with("mois",$mois);
 
 
     }
@@ -163,7 +172,36 @@ return view('visualiserFraisVisiteur')
 
 
     public function ValiderModification(){
-        return view("succesMaj");
+        if(session('idVisiteur') != null){
+             $visiteur=session('idVisiteur');
+        }
+        if(session('mois') != null){
+            $mois=session('mois');
+       }
+        $data = request()->all();
+        $lignes=[];
+        $cpt=0;
+        foreach ($data as $key) {
+            if(cpt !=0){
+                $parts = explode(':', $key);
+                $id = $parts[0];
+                $qt = $parts[1];
+                $lignes[$id]=$qt;
+                $cpt++;
+            }else{
+                $cpt++;
+            }
+
+        
+        
+        }
+
+        print("hello");
+        
+       // majFraisForfait($visiteur,$mois,$lignes);
+        print_r($lignes);
+
+        
     }
     public function validerFiche($visiteur, $mois){
         //do stuffs here with $prisw and $secsw

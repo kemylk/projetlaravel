@@ -322,6 +322,7 @@ public function getLesPrixFrais(){
 
 
 
+
 	
 /**
  * Modifie l'état et la date de modification d'une fiche de frais
@@ -333,9 +334,9 @@ public function getLesPrixFrais(){
 
  
 	public function majEtatFicheFrais($idVisiteur,$mois,$etat,$montant){
-		$req = "update ficheFrais set idEtat = '$etat', dateModif = now() 
-		where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois' and 
-		montantValide='$montant'";
+		$req = "update ficheFrais set idEtat = '$etat', dateModif = now() , montantValide ='$montant'
+		where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'  ";
+		
 		$this->monPdo->exec($req);
 	}
 

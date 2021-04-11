@@ -198,7 +198,7 @@ return view('visualiserFraisVisiteur')
 
         print("hello");
         
-       // majFraisForfait($visiteur,$mois,$lignes);
+       majFraisForfait($visiteur,$mois,$lignes);
         print_r($lignes);
 
         
@@ -207,6 +207,48 @@ return view('visualiserFraisVisiteur')
         //do stuffs here with $prisw and $secsw
         $visiteurs = PdoGsb::getAllVisiteurs();
         $fichefrai=PdoGsb::getLesInfosFicheFrais($visiteur,$mois);
+
+
+        //calcule montant
+
+        //mdofiie la valeur du montant dans fiche frai
+
+        $tab=PdoGsb::getLesFraisForfait($visiteur,$mois);
+        //print_r($tab);
+
+        $index=-1;
+        $montant=0;
+        foreach($tab as $element){
+            $index++;
+            foreach($element as $cle => $valeur){
+
+                $index++;
+                
+                if($index == 9 || $index == 20
+                || $index == 31 || $index == 42
+               ){
+                $montant = $montant + $valeur;
+                   
+                print($index."  = ".$cle." ".$valeur);
+                echo "<br>";
+                }
+
+            }
+        }
+
+        echo $montant;
+
+        $fichefrai['montantValide']=$montant;
+        echo "<br>";
+
+        echo $visiteur;
+        echo '<br/>';
+        echo $mois;
+
+        //print_r($fichefrai);
+        
+
+
         $res=PdoGsb::majEtatFicheFrais($visiteur,$mois,"VA",$fichefrai['montantValide']);
 
         $lesInfosFicheFrais = PdoGsb::getLesInfosFicheFrais($visiteur,$mois);
@@ -239,6 +281,6 @@ return view('visualiserFraisVisiteur')
         ->with('leMois', $moisASelectionner)
         ->with('comptable',session('comptable'));
 
-
+        
      }
 }

@@ -164,7 +164,8 @@ return view('visualiserFraisVisiteur')
         return view("miseajour")
         ->with("ligne",$lignefrais)
         ->with("visiteur",$visiteur)
-        ->with("mois",$mois);
+        ->with("mois",$mois)
+        ->with('comptable',session('comptable'));
 
 
     }
@@ -182,7 +183,7 @@ return view('visualiserFraisVisiteur')
         $lignes=[];
         $cpt=0;
         foreach ($data as $key) {
-            if(cpt !=0){
+            if($cpt !=0){
                 $parts = explode(':', $key);
                 $id = $parts[0];
                 $qt = $parts[1];
@@ -196,10 +197,15 @@ return view('visualiserFraisVisiteur')
         
         }
 
-        print("hello");
         
-       majFraisForfait($visiteur,$mois,$lignes);
-        print_r($lignes);
+        PdoGsb::majFraisForfait($visiteur,$mois,$lignes);
+        return view('succesMaj') 
+        ->with('comptable',session('comptable'))
+        ->with('visiteur',$visiteur)
+        ->with('mois',$mois);
+
+
+
 
         
     }

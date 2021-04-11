@@ -1,3 +1,7 @@
+@extends ('sommaireComptable')
+
+@section('contenu1')
+
 modification frais forfait {{$visiteur}}
 pour le mois de {{$mois}}
 
@@ -10,7 +14,9 @@ pour le mois de {{$mois}}
                     <form class="form-horizontal" method="POST" action="{{
                          route('modifsucces') }}">
                        <!-- {{ csrf_field() }}-->
-                       
+                       @csrf
+
+
                         @foreach($ligne as $l)
 
                         <div class="form-group">
@@ -43,3 +49,5 @@ pour le mois de {{$mois}}
         </div>
     </div>
 </div>
+
+@endsection 

@@ -30,6 +30,13 @@ Route::get('deconnexion',[
 ]);
 
 
+
+
+/*
+
+use case connexion , deconnexion comptable
+*/
+
 Route::get('/connexionComptable',[
         'as' => 'connexion_comptable',
         'uses' => 'connexionController@connexionComptable'
@@ -47,11 +54,18 @@ Route::get('deconnexionComptable',[
 ]);
 
 
+
+
+
 /* use case compte */
+
+
 Route::get('validerFeuillesdefrai',[
 'as'=>'validerFeuillesdefrai',
 'uses'=>'etatFraisController@formulaireValidation'
 ]);
+
+
 
 Route::get('/switchinfo/{visiteur}/{mois}',[
         'uses' => 'etatFraisController@validerFiche',
@@ -76,6 +90,9 @@ Route::post('afficher_fiche',[
         'as'=>'afficher_fiche',
         'uses'=>'etatFraisController@afficherFiche'
         ]);
+
+
+        
         
          /*-------------------- Use case état des frais---------------------------*/
 Route::get('selectionMois',[

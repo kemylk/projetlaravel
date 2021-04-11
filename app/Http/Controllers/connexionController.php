@@ -29,13 +29,28 @@ class connexionController extends Controller
 
 
 
+
+
+
     function deconnecter(){
         session(['visiteur' => null]);
 
         return redirect()->route('chemin_connexion');
-}
+    }
 
 
+
+
+
+
+
+
+
+
+
+    /*
+     forrmulaire de conenxion
+    */
     function connexionComptable(){
         return view('connexionComptable')->with('erreurs',null);
 

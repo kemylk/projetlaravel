@@ -101,12 +101,21 @@ class etatFraisController extends Controller
     }
 
 
+
+
+    /*
+
+    methode appele pour affiche les fiches frais
+
+    */
     function afficherFiche (Request $request){
-        $visiteurs = PdoGsb::getAllVisiteurs();
 
         $visiteur = $request['visiteur']; 
         $mois = $request['mois']; 
         $lesInfosFicheFrais = PdoGsb::getLesInfosFicheFrais($visiteur,$mois);
+
+
+        $visiteurs = PdoGsb::getAllVisiteurs();
         $numAnnee = MyDate::extraireAnnee( $mois);
         $numMois = MyDate::extraireMois( $mois);
         $libEtat = $lesInfosFicheFrais['libEtat'];
@@ -123,17 +132,6 @@ class etatFraisController extends Controller
         $lesCles = array_keys( $lesMois );
         $moisASelectionner = $lesCles[0];
         
-/*
-        $vue = view('visualiserFraisVisiteur')
-                ->with('leMois', $mois)->with('numAnnee',$numAnnee)
-                ->with('numMois',$numMois)->with('libEtat',$libEtat)
-                ->with('montantValide',$montantValide)
-                ->with('nbJustificatifs',$nbJustificatifs)
-                ->with('dateModif',$dateModifFr)
-                ->with('lesFraisForfait',$lesFraisForfait)
-                ->with('visiteur',$visiteur);
-*/
-
 session(['idVisiteur' => $visiteur]);
 session(['mois' => $mois]);
 
@@ -220,6 +218,8 @@ return view('visualiserFraisVisiteur')
         //mdofiie la valeur du montant dans fiche frai
 
         $tab=PdoGsb::getLesFraisForfait($visiteur,$mois);
+
+
         //print_r($tab);
 
         $index=-1;
@@ -235,21 +235,21 @@ return view('visualiserFraisVisiteur')
                ){
                 $montant = $montant + $valeur;
                    
-                print($index."  = ".$cle." ".$valeur);
-                echo "<br>";
+             //   print($index."  = ".$cle." ".$valeur);
+               // echo "<br>";
                 }
 
             }
         }
 
-        echo $montant;
+       // echo $montant;
 
         $fichefrai['montantValide']=$montant;
-        echo "<br>";
+        //echo "<br>";
 
-        echo $visiteur;
-        echo '<br/>';
-        echo $mois;
+       // echo $visiteur;
+       // echo '<br/>';
+       // echo $mois;
 
         //print_r($fichefrai);
         

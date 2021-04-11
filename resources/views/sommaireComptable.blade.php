@@ -1,7 +1,7 @@
 @extends ('modeles/visiteur')
     @section('menu')
             <!-- Division pour le sommaire -->
-        <div id="menuGauche">
+        <div id="menuGauche" style="height:100%;">
             <div id="infosUtil">
                   
              </div>  

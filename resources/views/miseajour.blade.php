@@ -10,7 +10,7 @@ pour le mois de {{$mois}}
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Modifier un utilisateur</div>
-                <div class="panel-body">
+                <div class="panel-body" style="margin:auto;">
                     <form class="form-horizontal" method="POST" action="{{
                          route('modifsucces') }}">
                        <!-- {{ csrf_field() }}-->
@@ -19,7 +19,7 @@ pour le mois de {{$mois}}
 
                         @foreach($ligne as $l)
 
-                        <div class="form-group">
+                        <div class="form-group" >
                             <label for="name" class="col-md-4 control-label">{{$l['idFraisForfait']}}</label>
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control"

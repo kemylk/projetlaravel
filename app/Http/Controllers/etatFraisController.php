@@ -36,6 +36,9 @@ class etatFraisController extends Controller
             $visiteur = session('visiteur');
             $idVisiteur = $visiteur['id'];
             $leMois = $request['lstMois']; 
+
+
+            /* */
 		    $lesMois = PdoGsb::getLesMoisDisponibles($idVisiteur);
             $lesFraisForfait = PdoGsb::getLesFraisForfait($idVisiteur,$leMois);
             $lesInfosFicheFrais = PdoGsb::getLesInfosFicheFrais($idVisiteur,$leMois);
@@ -46,6 +49,7 @@ class etatFraisController extends Controller
             $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
             $dateModif =  $lesInfosFicheFrais['dateModif'];
             $lesMois = PdoGsb::getLesMoisDisponibles($visiteur);
+            
 		    // Afin de sélectionner par défaut le dernier mois dans la zone de liste
 		    // on demande toutes les clés, et on prend la première,
 		    // les mois étant triés décroissants
@@ -73,21 +77,19 @@ class etatFraisController extends Controller
 
     function formulaireValidation(){
 
-
+        //teste comptable loger
         if(session('comptable') != null){
-          
             $visiteurs = PdoGsb::getAllVisiteurs();
+
             $lesMois = PdoGsb::getAllMois();
 		    // Afin de sélectionner par défaut le dernier mois dans la zone de liste
 		    // on demande toutes les clés, et on prend la première,
 		    // les mois étant triés décroissants
 		    $lesCles = array_keys( $lesMois );
 		    $moisASelectionner = $lesCles[0];
-            
 		    // Afin de sélectionner par défaut le dernier mois dans la zone de liste
 		    // on demande toutes les clés, et on prend la première,
 		    // les mois étant triés décroissants
-		  
             return view('formulaireValidationFrai')
                         ->with('visiteurs', $visiteurs)
                         ->with('lesMois', $lesMois)
@@ -96,7 +98,7 @@ class etatFraisController extends Controller
                        
         }
         else{
-            return view('connexion')->with('erreurs',null);
+            return view('connexionComptable')->with('erreurs',null);
         }
     }
 
@@ -110,11 +112,11 @@ class etatFraisController extends Controller
     */
     function afficherFiche (Request $request){
 
+        //recuperes les infos du formulaire
         $visiteur = $request['visiteur']; 
         $mois = $request['mois']; 
+
         $lesInfosFicheFrais = PdoGsb::getLesInfosFicheFrais($visiteur,$mois);
-
-
         $visiteurs = PdoGsb::getAllVisiteurs();
         $numAnnee = MyDate::extraireAnnee( $mois);
         $numMois = MyDate::extraireMois( $mois);
@@ -124,32 +126,33 @@ class etatFraisController extends Controller
         $dateModif =  $lesInfosFicheFrais['dateModif'];
         $dateModifFr = MyDate::getFormatFrançais($dateModif);
         $lesFraisForfait = PdoGsb::getLesFraisForfait($visiteur,$mois);
-
         $lesMois = PdoGsb::getAllMois();
         // Afin de sélectionner par défaut le dernier mois dans la zone de liste
         // on demande toutes les clés, et on prend la première,
         // les mois étant triés décroissants
         $lesCles = array_keys( $lesMois );
         $moisASelectionner = $lesCles[0];
-        
-session(['idVisiteur' => $visiteur]);
-session(['mois' => $mois]);
+                
+        session(['idVisiteur' => $visiteur]);
+        session(['mois' => $mois]);
 
-return view('visualiserFraisVisiteur')
-//->with('erreurs',null)                       
- ->with('visiteurs', $visiteurs)
- 
- ->with('leMois', $mois)->with('numAnnee',$numAnnee)
- ->with('numMois',$numMois)->with('libEtat',$libEtat)
- ->with('montantValide',$montantValide)
- ->with('nbJustificatifs',$nbJustificatifs)
- ->with('dateModif',$dateModifFr)
- ->with('lesFraisForfait',$lesFraisForfait)
- ->with('visiteur',$visiteur)
- ->with('lesMois', $lesMois)
- ->with('leMois', $moisASelectionner)
- 
- ->with('comptable',session('comptable'));
+        return view('visualiserFraisVisiteur')
+        //parce que on a le formulaire validation
+        ->with('visiteurs', $visiteurs)   
+
+        ->with('leMois', $mois)->with('numAnnee',$numAnnee)
+        ->with('numMois',$numMois)->with('libEtat',$libEtat)
+        ->with('montantValide',$montantValide)
+        ->with('nbJustificatifs',$nbJustificatifs)
+        ->with('dateModif',$dateModifFr)
+        ->with('lesFraisForfait',$lesFraisForfait)
+        ->with('visiteur',$visiteur)
+        //le formulaire
+        ->with('lesMois', $lesMois)
+        ->with('leMois', $moisASelectionner)
+
+        //bonjour sessions
+        ->with('comptable',session('comptable'));
 
 
     }
@@ -182,10 +185,22 @@ return view('visualiserFraisVisiteur')
         $cpt=0;
         foreach ($data as $key) {
             if($cpt !=0){
+
+               // key => etp:10
+
+                // le if permet d eviter l erreur ofset 
+                // on creer le tableau associatif 
                 $parts = explode(':', $key);
+
+                // parts[0]==etp et parts[1]==10
+
                 $id = $parts[0];
                 $qt = $parts[1];
+
+
                 $lignes[$id]=$qt;
+
+                //$lignes[etp]=10
                 $cpt++;
             }else{
                 $cpt++;
@@ -208,20 +223,12 @@ return view('visualiserFraisVisiteur')
         
     }
     public function validerFiche($visiteur, $mois){
-        //do stuffs here with $prisw and $secsw
-        $visiteurs = PdoGsb::getAllVisiteurs();
-        $fichefrai=PdoGsb::getLesInfosFicheFrais($visiteur,$mois);
-
-
+       
         //calcule montant
-
         //mdofiie la valeur du montant dans fiche frai
-
+        //on recuperes toutes les données de fiche de frais 
+        //on calcule le montant
         $tab=PdoGsb::getLesFraisForfait($visiteur,$mois);
-
-
-        //print_r($tab);
-
         $index=-1;
         $montant=0;
         foreach($tab as $element){
@@ -229,13 +236,18 @@ return view('visualiserFraisVisiteur')
             foreach($element as $cle => $valeur){
 
                 $index++;
-                
+                /*
+                print($index."  = ".$cle." ".$valeur);
+                echo "<br/>";
+                */
+
+
+
                 if($index == 9 || $index == 20
                 || $index == 31 || $index == 42
                ){
                 $montant = $montant + $valeur;
                    
-             //   print($index."  = ".$cle." ".$valeur);
                // echo "<br>";
                 }
 
@@ -244,19 +256,17 @@ return view('visualiserFraisVisiteur')
 
        // echo $montant;
 
-        $fichefrai['montantValide']=$montant;
-        //echo "<br>";
 
-       // echo $visiteur;
-       // echo '<br/>';
-       // echo $mois;
-
-        //print_r($fichefrai);
+        //on met a jour le montant
         
-
-
+        $visiteurs = PdoGsb::getAllVisiteurs();
+        $fichefrai=PdoGsb::getLesInfosFicheFrais($visiteur,$mois);
+        $fichefrai['montantValide']=$montant;
         $res=PdoGsb::majEtatFicheFrais($visiteur,$mois,"VA",$fichefrai['montantValide']);
 
+
+
+        // on renvoie les memes infos que precedement parceque la vue en aura besoin
         $lesInfosFicheFrais = PdoGsb::getLesInfosFicheFrais($visiteur,$mois);
         $numAnnee = MyDate::extraireAnnee( $mois);
         $numMois = MyDate::extraireMois( $mois);
@@ -266,15 +276,12 @@ return view('visualiserFraisVisiteur')
         $dateModif =  $lesInfosFicheFrais['dateModif'];
         $dateModifFr = MyDate::getFormatFrançais($dateModif);
         $lesFraisForfait = PdoGsb::getLesFraisForfait($visiteur,$mois);
-
         $lesMois = PdoGsb::getAllMois();
         $lesCles = array_keys( $lesMois );
         $moisASelectionner = $lesCles[0];
-
         return view('MisAjourFicheFrai')
         ->with('visiteurs', $visiteurs)
         ->with('lesMois', $lesMois)
- 
         ->with('leMois', $mois)
         ->with('numAnnee',$numAnnee)
         ->with('numMois',$numMois)->with('libEtat',$libEtat)
@@ -285,8 +292,8 @@ return view('visualiserFraisVisiteur')
         ->with('visiteur',$visiteur)
         ->with('lesMois', $lesMois)
         ->with('leMois', $moisASelectionner)
-        ->with('comptable',session('comptable'));
-
+        ->with('comptable',session('comptable'));   
+        
         
      }
 }

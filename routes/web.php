@@ -67,9 +67,9 @@ Route::get('validerFeuillesdefrai',[
 
 
 
-Route::get('/switchinfo/{visiteur}/{mois}',[
+Route::get('/validerFiche/{visiteur}/{mois}',[
         'uses' => 'etatFraisController@validerFiche',
-        'as'   => 'switch'
+        'as'   => 'validerFiche'
     ]);
 
 Route::get('/mdoifier/{visiteur}/{mois}',[
@@ -93,8 +93,7 @@ Route::post('afficher_fiche',[
 
 
         
-        
-         /*-------------------- Use case état des frais---------------------------*/
+/*-------------------- Use case état des frais---------------------------*/
 Route::get('selectionMois',[
         'as'=>'chemin_selectionMois',
         'uses'=>'etatFraisController@selectionnerMois'

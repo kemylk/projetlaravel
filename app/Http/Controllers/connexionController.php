@@ -59,10 +59,13 @@ class connexionController extends Controller
    function  comptableValider (Request $request){
     $login = $request['login'];
     $mdp = $request['mdp'];
+
     $comptable = PdoGsb::getInfoComptable($login,$mdp);
+    
     if(!is_array($comptable)){
+       //connexion echoue
         $erreurs[] = "Login ou mot de passe incorrect(s)";
-        return view('connexion')->with('erreurs',$erreurs);
+        return view('connexionComptable')->with('erreurs',$erreurs);
     }
     else{
         session(['comptable' => $comptable]);

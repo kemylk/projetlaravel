@@ -35,7 +35,7 @@
             
             <button>
              <a 
-             href="{{route('switch', ['visiteur'=>$visiteur, 'mois'=>$leMois])}}">valider</a>
+             href="{{route('validerFiche', ['visiteur'=>$visiteur, 'mois'=>$leMois])}}">valider</a>
              </button>
             </td>
 		</tr>

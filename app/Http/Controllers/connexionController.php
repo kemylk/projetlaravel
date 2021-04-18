@@ -57,6 +57,8 @@ class connexionController extends Controller
     }
 
    function  comptableValider (Request $request){
+
+    //on recupere les donnes du formulaires
     $login = $request['login'];
     $mdp = $request['mdp'];
 

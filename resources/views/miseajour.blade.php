@@ -24,7 +24,8 @@ pour le mois de {{$mois}}
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control"
                                  name="{{$l['idFraisForfait']}}"
-                                  value="{{ $l['idFraisForfait'] }}:{{ $l['quantite'] }}" required autofocus>
+                                  value="{{ $l['idFraisForfait'] }}:{{ $l['quantite'] }}" 
+                                  required autofocus>
                             </div>
                         </div>
 

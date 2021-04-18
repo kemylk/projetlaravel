@@ -222,6 +222,19 @@ class etatFraisController extends Controller
 
         
     }
+
+
+
+
+
+
+
+
+
+
+
+    /* valide la fiche frais pour la passe a VA */
+    /* on recupere le visiteur et le mois depuis le href */
     public function validerFiche($visiteur, $mois){
        
         //calcule montant
@@ -240,6 +253,7 @@ class etatFraisController extends Controller
                 print($index."  = ".$cle." ".$valeur);
                 echo "<br/>";
                 */
+                
 
 
 
@@ -248,16 +262,16 @@ class etatFraisController extends Controller
                ){
                 $montant = $montant + $valeur;
                    
-               // echo "<br>";
+                
                 }
 
             }
         }
 
-       // echo $montant;
 
 
         //on met a jour le montant
+        
         
         $visiteurs = PdoGsb::getAllVisiteurs();
         $fichefrai=PdoGsb::getLesInfosFicheFrais($visiteur,$mois);
@@ -279,6 +293,7 @@ class etatFraisController extends Controller
         $lesMois = PdoGsb::getAllMois();
         $lesCles = array_keys( $lesMois );
         $moisASelectionner = $lesCles[0];
+        
         return view('MisAjourFicheFrai')
         ->with('visiteurs', $visiteurs)
         ->with('lesMois', $lesMois)

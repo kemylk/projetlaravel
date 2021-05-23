@@ -219,6 +219,7 @@ public function getLesPrixFrais(){
 
 
 
+
 	public function getLigneFraisForfait($idVisiteur,$mois){
 		$req = "select * from lignefraisforfait 
 	where lignefraisforfait.idVisiteur='" . $idVisiteur . "' and lignefraisforfait.mois='" . $mois ."'";

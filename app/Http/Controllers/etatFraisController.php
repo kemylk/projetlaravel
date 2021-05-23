@@ -162,30 +162,67 @@ class etatFraisController extends Controller
 
         $lignefrais=PdoGsb::getLigneFraisForfait($visiteur,$mois);
 
-        return view("miseajour")
-        ->with("ligne",$lignefrais)
+                $index=0;
+                $ligne=[];
+               foreach($lignefrais as $element){
+                    $index++;
+                    $v1 = "";
+                    $v2 ="";
+                    foreach($element as $cle => $valeur){
+                    
+                     
+                        if($index == 7){
+                            $ligne['ETP']=$valeur;
+                        }
+                        if($index == 16){
+                            $ligne['KM']=$valeur;
+                        }
+                        if($index == 25){
+                            $ligne['NUI']=$valeur;
+                        }
+                        if($index == 34){
+                            $ligne['REP']=$valeur;
+                        }
+                        
+                       
+                        $index++;
+                    }
+                 }
+           /* foreach($ligne as $cle => $valeur){
+                print($cle." => ".$valeur);
+                print("<br/>");
+            }*/
+
+               
+        return view("majFraisForfait")
+        ->with("ligne",$ligne)
         ->with("visiteur",$visiteur)
         ->with("mois",$mois)
         ->with('comptable',session('comptable'));
-
+    
+                 
 
     }
 
 
 
-    public function ValiderModification(){
+    public function ValiderModification(Request $request){
         if(session('idVisiteur') != null){
              $visiteur=session('idVisiteur');
         }
         if(session('mois') != null){
             $mois=session('mois');
        }
-        $data = request()->all();
+
+      
+        $data = $request->all();
         $lignes=[];
         $cpt=0;
+
+        
         foreach ($data as $key) {
             if($cpt !=0){
-
+              
                // key => etp:10
 
                 // le if permet d eviter l erreur ofset 
@@ -210,13 +247,15 @@ class etatFraisController extends Controller
         
         }
 
+        //cette methode a besoin 
+        // d un tableau associatif
         
         PdoGsb::majFraisForfait($visiteur,$mois,$lignes);
         return view('succesMaj') 
         ->with('comptable',session('comptable'))
         ->with('visiteur',$visiteur)
         ->with('mois',$mois);
-
+        
 
 
 
@@ -252,9 +291,9 @@ class etatFraisController extends Controller
                 /*
                 print($index."  = ".$cle." ".$valeur);
                 echo "<br/>";
-                */
                 
-
+                
+*/
 
 
                 if($index == 9 || $index == 20
@@ -270,12 +309,12 @@ class etatFraisController extends Controller
 
 
 
-        //on met a jour le montant
-        
-        
+        //on met a jour le montant et on valide la fiche
         $visiteurs = PdoGsb::getAllVisiteurs();
         $fichefrai=PdoGsb::getLesInfosFicheFrais($visiteur,$mois);
         $fichefrai['montantValide']=$montant;
+
+        
         $res=PdoGsb::majEtatFicheFrais($visiteur,$mois,"VA",$fichefrai['montantValide']);
 
 

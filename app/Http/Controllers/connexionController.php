@@ -49,7 +49,7 @@ class connexionController extends Controller
 
 
     /*
-     forrmulaire de conenxion
+     formulaire de connexion
     */
     function connexionComptable(){
         return view('connexionComptable')->with('erreurs',null);
@@ -58,14 +58,14 @@ class connexionController extends Controller
 
    function  comptableValider (Request $request){
 
-    //on recupere les donnes du formulaires
+    //on récupère les données du formulaires
     $login = $request['login'];
     $mdp = $request['mdp'];
 
     $comptable = PdoGsb::getInfoComptable($login,$mdp);
     
     if(!is_array($comptable)){
-       //connexion echoue
+       //connexion échouée
         $erreurs[] = "Login ou mot de passe incorrect(s)";
         return view('connexionComptable')->with('erreurs',$erreurs);
     }

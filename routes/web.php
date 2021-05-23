@@ -60,25 +60,37 @@ Route::get('deconnexionComptable',[
 /* use case compte */
 
 
+
+//formulaire de validation
 Route::get('validerFeuillesdefrai',[
 'as'=>'validerFeuillesdefrai',
 'uses'=>'etatFraisController@formulaireValidation'
 ]);
 
 
+//afficher la fiche frais une fois le formulaire remplis
+Route::post('afficher_fiche',[
+        'as'=>'afficher_fiche',
+        'uses'=>'etatFraisController@afficherFiche'
+        ]);
 
+
+
+//valider la fiche de frais selectionnes
 Route::get('/validerFiche/{visiteur}/{mois}',[
         'uses' => 'etatFraisController@validerFiche',
         'as'   => 'validerFiche'
-    ]);
+]);
 
-Route::get('/mdoifier/{visiteur}/{mois}',[
+
+//afficher le formulaire de modification
+Route::get('/modifier/{visiteur}/{mois}',[
         'uses' => 'etatFraisController@modifier',
         'as'   => 'modifier'
     ]);
 
 
-
+//valide ce formulaire de modification
 Route::post("/modifier/succes",[
         'uses'=>'etatFraisController@ValiderModification',
         'as'=>'modifsucces'
@@ -86,10 +98,6 @@ Route::post("/modifier/succes",[
 
 
 
-Route::post('afficher_fiche',[
-        'as'=>'afficher_fiche',
-        'uses'=>'etatFraisController@afficherFiche'
-        ]);
 
 
         

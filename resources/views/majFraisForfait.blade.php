@@ -1,45 +1,19 @@
-@extends ('sommaire')
+@extends ('sommaireComptable')
 @section('contenu1')
 
 <div id="contenu">
-    <h2>Renseigner ma fiche de frais du mois {{ $numMois }}-{{ $numAnnee }}</h2>
-    <form method="post"  action="{{ route('chemin_sauvegardeFrais') }}">
+
+    <form method="post"  action="{{ route('modifsucces') }}">
                     {{ csrf_field() }} <!-- laravel va ajouter un champ caché avec un token -->
         <div class="corpsForm">
             <fieldset>
                 <legend>Eléments forfaitisés</legend>
-                @includeWhen($erreurs != null, 'msgerreurs', ['erreurs' => $erreurs]) 
-                @includeWhen($message != "", 'message', ['message' => $message])
-                @foreach ($lesFrais as $key => $frais)
-                    <p>
-                    <input type = "hidden" name = "lesLibFrais[]"
-                            @if($method  == 'GET')
-                                value = "{{$frais['libelle']}}"
-                            @else
-                                value ="{{$lesLibFrais[$loop->index]}}"
-                            @endif> 
-                    <label name = "libelle" for="idFrais">
-                                @if($method  == 'GET')
-                                    {{$frais['libelle']}}
-                                @else
-                                    {{$lesLibFrais[$loop->index]}}
-                                @endif
-                    </label>
-                    <input type="text" required
-                                @if($method  == 'GET')
-                                    name = "lesFrais[{{$frais['idfrais']}}]"
-                                    value = "{{$frais['quantite']}}"
-                                @else
-                                    name = "lesFrais[{{$key}}]"
-                                    value = "{{$frais}}"
-                                @endif>
-                              
-                        </p>
-                @endforeach
+                @foreach ($ligne as $key => $frais)
+                <div>
+                 {{$key}}         <input type = "text" name ="{{$key}}" value="{{$key}}:{{$frais}}"  size = "30" maxlength = "45" required >
 
-                <!-- TP 1 QUESTION 1 -->
-                <div><label>Total frais : {{$cumul}} €</label></div>
-                <!-- FIN TP 1 QUESTION 1 -->
+                </div>
+                @endforeach
 
             </fieldset>
         </div>          
